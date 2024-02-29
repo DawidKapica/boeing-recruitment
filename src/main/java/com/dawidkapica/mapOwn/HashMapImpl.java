@@ -1,46 +1,37 @@
 package com.dawidkapica.mapOwn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HashMapImpl<T, E> {
 
-    private HashMapBucket<T, E>[] buckets;
+    private final List<Duple<T, E>>[] buckets;
 
     private static final int bucketSize = 100;
 
     public HashMapImpl() {
-        buckets = new HashMapBucket[bucketSize];
+        buckets = new List[bucketSize];
         for (int i = 0; i < bucketSize; i++) {
-            buckets[i] = new HashMapBucket<>();
+            buckets[i] = new ArrayList<>();
         }
     }
 
     public void put(T key, E value) {
-        int index = getBucket(key).indexOf(new Duple<>(key, value));
-        if (index != -1)
-            getBucket(key).remove(index);
-
+        remove(key);
         getBucket(key).add(new Duple<>(key, value));
     }
 
     public E get(T key) {
-        Duple<T, E> duple = getBucket(key).stream().filter(d -> d.getKey().equals(key)).findFirst().orElse(null);
-        return duple != null ? duple.getValue() : null;
+        return getBucket(key).stream().filter(d -> d.getKey().equals(key)).findFirst().map(Duple::getValue).orElse(null);
     }
 
     public boolean remove(T key) {
-        Duple dupleToRm = getBucket(key).stream().filter(duple -> duple.getKey().equals(key)).findFirst().orElse(null);
-        if (dupleToRm != null) {
-            getBucket(key).remove(dupleToRm);
-            return true;
-        }
-        return false;
+        return getBucket(key).removeIf(duple -> duple.getKey().equals(key));
     }
 
     // package modifier for tests
     List<Duple<T, E>> getBucket(T key) {
-        int indexOfBucket = getIndexOfBucket(key);
-        return buckets[indexOfBucket].getBucket();
+        return buckets[getIndexOfBucket(key)];
     }
 
     private int getIndexOfBucket(T key) {

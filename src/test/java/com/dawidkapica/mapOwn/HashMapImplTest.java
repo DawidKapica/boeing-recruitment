@@ -10,7 +10,7 @@ public class HashMapImplTest {
     public void putSingleValTest() {
         HashMapImpl<String, Integer> hashMap = new HashMapImpl<>();
         String key = "testKey";
-        hashMap.put(key, 1);
+        hashMap.put(key, 1);https://github.com/DawidKapica/boeing-recruitment
 
         Assert.assertEquals("expected size of bucket is different", 1, hashMap.getBucket(key).size());
         Assert.assertEquals(Integer.valueOf(1), hashMap.getBucket(key).getFirst().getValue());

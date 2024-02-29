@@ -7,9 +7,11 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        int numberOfPuts = 1000;
+        compareJavaHashMapToHashMapImpl(100000);
+    }
 
-        long tsJava= System.currentTimeMillis();
+    private static void compareJavaHashMapToHashMapImpl(int numberOfPuts) {
+        long tsJava = System.currentTimeMillis();
         Map<Integer, String> javaHashMap = new HashMap<>();
         for (int i = 0; i < numberOfPuts; i++) {
             javaHashMap.put(i, System.currentTimeMillis() + "");
@@ -17,7 +19,7 @@ public class Main {
         long teJava = System.currentTimeMillis();
         System.out.println(teJava - tsJava);
 
-        long tsJOwn= System.currentTimeMillis();
+        long tsJOwn = System.currentTimeMillis();
         HashMapImpl<Integer, String> ownHashMap = new HashMapImpl<>();
         for (int i = 0; i < numberOfPuts; i++) {
             ownHashMap.put(i, System.currentTimeMillis() + "");
